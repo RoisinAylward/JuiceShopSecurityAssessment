@@ -1,0 +1,926 @@
+docker :                
+At line:1 char:1
++ docker run --rm -v "${PWD}:/src" semgrep/semgrep semgrep --config=aut ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (               :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+               
+┌─────────────┐
+│ Scan Status │
+└─────────────┘
+  Scanning 2098 files tracked by git with 1059 Code rules:
+                                                                                                                        
+  Language      Rules   Files          Origin      Rules                                                                
+ ─────────────────────────────        ───────────────────                                                         
+      
+  <multilang>      76    1399          Community    1059                                                                
+  ts              163     948                                                                                           
+  json              4     211                                                                                           
+  yaml             31     182                                                                                           
+  html              1     154                                                                                           
+  solidity         21      34                                                                                           
+  js              153      26                                                                                           
+  dockerfile        6       2                                                                                           
+  bash              4       2                                                                                           
+                                                                                                                        
+Warning: 3 timeout error(s) in /src/frontend/src/assets/private/three.js when running the following rules:
+[javascript.express.security.injection.raw-html-format.raw-html-format, javascript.lang.security.audit.unsafe-
+formatstring.unsafe-formatstring, javascript.lang.security.insecure-object-assign.insecure-object-assign]
+Semgrep stopped running rules on /src/frontend/src/assets/private/three.js after 3 timeout error(s). See `--timeout-
+threshold` for more info.
+Warning: 3 timeout error(s) in /src/juice-shop-master/frontend/src/assets/private/three.js when running the following
+rules: [javascript.express.security.injection.raw-html-format.raw-html-format, javascript.lang.security.audit.unsafe-
+formatstring.unsafe-formatstring, javascript.lang.security.insecure-object-assign.insecure-object-assign]
+Semgrep stopped running rules on /src/juice-shop-master/frontend/src/assets/private/three.js after 3 timeout error(s).
+See `--timeout-threshold` for more info.
+                    
+                    
+┌──────────────────┐
+│ 86 Code Findings │
+└──────────────────┘
+                                                      
+    /src/.github/workflows/update-challenges-ebook.yml
+   ❯❯❱ yaml.github-actions.security.run-shell-injection.run-shell-injection
+          ❰❰ Blocking ❱❱
+          Using variable interpolation `${{...}}` with `github` context data in a `run:` step could allow an  
+          attacker to inject their own code into the runner. This would allow them to steal secrets and code. 
+          `github` context data can have arbitrary user input and should be treated as untrusted. Instead, use
+          an intermediate environment variable with `env:` to store the data and use the environment variable 
+          in the `run:` script. Be sure to use double-quotes the environment variable, like this: "$ENVVAR".  
+          Details: https://sg.run/pkzk                                                                        
+                                                                                                              
+           22┆ run: |
+           23┆   cd docs/modules/ROOT/assets/data
+           24┆   rm challenges.yml
+           25┆   wget https://raw.githubusercontent.com/juice-shop/juice-shop/${{ github.ref_name
+               }}/data/static/challenges.yml                                                     
+                                                           
+    /src/.github/workflows/update-challenges-www-legacy.yml
+   ❯❯❱ yaml.github-actions.security.run-shell-injection.run-shell-injection
+          ❰❰ Blocking ❱❱
+          Using variable interpolation `${{...}}` with `github` context data in a `run:` step could allow an  
+          attacker to inject their own code into the runner. This would allow them to steal secrets and code. 
+          `github` context data can have arbitrary user input and should be treated as untrusted. Instead, use
+          an intermediate environment variable with `env:` to store the data and use the environment variable 
+          in the `run:` script. Be sure to use double-quotes the environment variable, like this: "$ENVVAR".  
+          Details: https://sg.run/pkzk                                                                        
+                                                                                                              
+           27┆ run: |
+           28┆   if [ "${{ github.ref_name }}" = "master" ]; then
+           29┆     DEST_FILE="_data/challenges.yml"
+           30┆   else
+           31┆     DEST_FILE="_data/challenges_dev.yml"
+           32┆   fi
+           33┆   rm -f $DEST_FILE
+           34┆   cp juice-shop/data/static/challenges.yml $DEST_FILE
+            ⋮┆----------------------------------------
+           36┆ run: |
+           37┆   if [ "${{ github.ref_name }}" = "master" ]; then
+           38┆     DEST_FILE="_data/snippets.json"
+           39┆   else
+           40┆     DEST_FILE="_data/snippets_dev.json"
+           41┆   fi
+           42┆   rm -f $DEST_FILE
+           43┆   CHALLENGES=$(ls juice-shop/data/static/codefixes/*.info.yml | xargs -n 1 basename | sed
+               's/\.info\.yml//' | jq -R . | jq -s -c '{"challenges": .}')                              
+           44┆   echo $CHALLENGES > $DEST_FILE
+                                                    
+    /src/.github/workflows/update-challenges-www.yml
+   ❯❯❱ yaml.github-actions.security.run-shell-injection.run-shell-injection
+          ❰❰ Blocking ❱❱
+          Using variable interpolation `${{...}}` with `github` context data in a `run:` step could allow an  
+          attacker to inject their own code into the runner. This would allow them to steal secrets and code. 
+          `github` context data can have arbitrary user input and should be treated as untrusted. Instead, use
+          an intermediate environment variable with `env:` to store the data and use the environment variable 
+          in the `run:` script. Be sure to use double-quotes the environment variable, like this: "$ENVVAR".  
+          Details: https://sg.run/pkzk                                                                        
+                                                                                                              
+           27┆ run: |
+           28┆   if [ "${{ github.ref_name }}" = "master" ]; then
+           29┆     DEST_FILE="_data/challenges.yml"
+           30┆   else
+           31┆     DEST_FILE="_data/challenges_dev.yml"
+           32┆   fi
+           33┆   rm -f $DEST_FILE
+           34┆   cp juice-shop/data/static/challenges.yml $DEST_FILE
+            ⋮┆----------------------------------------
+           36┆ run: |
+           37┆   if [ "${{ github.ref_name }}" = "master" ]; then
+           38┆     DEST_FILE="_data/snippets.json"
+           39┆   else
+           40┆     DEST_FILE="_data/snippets_dev.yml"
+           41┆   fi
+           42┆   rm -f $DEST_FILE
+           43┆   CHALLENGES=$(ls juice-shop/data/static/codefixes/*.info.yml | xargs -n 1 basename | sed
+               's/\.info\.yml//' | jq -R . | jq -s -c '{"challenges": .}')                              
+           44┆   echo $CHALLENGES > $DEST_FILE
+                                                     
+    /src/data/static/codefixes/dbSchemaChallenge_1.ts
+   ❯❯❱ javascript.sequelize.security.audit.sequelize-injection-express.express-sequelize-injection
+          ❰❰ Blocking ❱❱
+          Detected a sequelize statement that is tainted by user-input. This could lead to SQL injection if   
+          the variable is user-controlled and is not properly sanitized. In order to prevent SQL injection, it
+          is recommended to use parameterized queries or prepared statements.                                 
+          Details: https://sg.run/gjoe                                                                        
+                                                                                                              
+            5┆ models.sequelize.query("SELECT * FROM Products WHERE ((name LIKE '%"+criteria+"%' OR
+               description LIKE '%"+criteria+"%') AND deletedAt IS NULL) ORDER BY name")           
+                                                     
+    /src/data/static/codefixes/dbSchemaChallenge_3.ts
+   ❯❯❱ javascript.sequelize.security.audit.sequelize-injection-express.express-sequelize-injection
+          ❰❰ Blocking ❱❱
+          Detected a sequelize statement that is tainted by user-input. This could lead to SQL injection if   
+          the variable is user-controlled and is not properly sanitized. In order to prevent SQL injection, it
+          is recommended to use parameterized queries or prepared statements.                                 
+          Details: https://sg.run/gjoe                                                                        
+                                                                                                              
+           11┆ models.sequelize.query(`SELECT * FROM Products WHERE ((name LIKE '%${criteria}%' OR
+               description LIKE '%${criteria}%') AND deletedAt IS NULL) ORDER BY name`)           
+                                                       
+    /src/data/static/codefixes/restfulXssChallenge_2.ts
+     ❱ javascript.audit.detect-replaceall-sanitization.detect-replaceall-sanitization
+          ❰❰ Blocking ❱❱
+          Detected a call to `replaceAll()` in an attempt to HTML escape the string                        
+          `tableData[i].description`. Manually sanitizing input through a manually built list can be       
+          circumvented in many situations, and it's better to use a well known sanitization library such as
+          `sanitize-html` or `DOMPurify`.                                                                  
+          Details: https://sg.run/AzoB                                                                     
+                                                                                                           
+           49┆ tableData[i].description = tableData[i].description.replaceAll('<', '&lt;').replaceAll('>',
+               '&gt;')                                                                                    
+            ⋮┆----------------------------------------
+     ❱ javascript.audit.detect-replaceall-sanitization.detect-replaceall-sanitization
+          ❰❰ Blocking ❱❱
+          Detected a call to `replaceAll()` in an attempt to HTML escape the string                          
+          `tableData[i].description.replaceAll('<', '&lt;')`. Manually sanitizing input through a manually   
+          built list can be circumvented in many situations, and it's better to use a well known sanitization
+          library such as `sanitize-html` or `DOMPurify`.                                                    
+          Details: https://sg.run/AzoB                                                                       
+                                                                                                             
+           49┆ tableData[i].description = tableData[i].description.replaceAll('<', '&lt;').replaceAll('>',
+               '&gt;')                                                                                    
+                                                              
+    /src/data/static/codefixes/unionSqlInjectionChallenge_1.ts
+   ❯❯❱ javascript.sequelize.security.audit.sequelize-injection-express.express-sequelize-injection
+          ❰❰ Blocking ❱❱
+          Detected a sequelize statement that is tainted by user-input. This could lead to SQL injection if   
+          the variable is user-controlled and is not properly sanitized. In order to prevent SQL injection, it
+          is recommended to use parameterized queries or prepared statements.                                 
+          Details: https://sg.run/gjoe                                                                        
+                                                                                                              
+            6┆ models.sequelize.query(`SELECT * FROM Products WHERE ((name LIKE '%${criteria}%' OR
+               description LIKE '%${criteria}%') AND deletedAt IS NULL) ORDER BY name`)           
+                                                              
+    /src/data/static/codefixes/unionSqlInjectionChallenge_3.ts
+   ❯❯❱ javascript.sequelize.security.audit.sequelize-injection-express.express-sequelize-injection
+          ❰❰ Blocking ❱❱
+          Detected a sequelize statement that is tainted by user-input. This could lead to SQL injection if   
+          the variable is user-controlled and is not properly sanitized. In order to prevent SQL injection, it
+          is recommended to use parameterized queries or prepared statements.                                 
+          Details: https://sg.run/gjoe                                                                        
+                                                                                                              
+           10┆ models.sequelize.query(`SELECT * FROM Products WHERE ((name LIKE '%${criteria}%' OR
+               description LIKE '%${criteria}%') AND deletedAt IS NULL) ORDER BY name`)           
+                              
+    /src/data/static/users.yml
+   ❯❯❱ generic.secrets.security.detected-generic-secret.detected-generic-secret
+          ❰❰ Blocking ❱❱
+          Generic Secret detected     
+          Details: https://sg.run/l2o5
+                                      
+          151┆ totpSecret: IFTXE3SPOEYVURT2MRYGI52TKJ4HC3KH
+                                           
+    /src/frontend/src/app/app.guard.spec.ts
+   ❯❯❱ generic.secrets.security.detected-jwt-token.detected-jwt-token
+          ❰❰ Blocking ❱❱
+          JWT token detected          
+          Details: https://sg.run/05N5
+                                      
+           38┆ localStorage.setItem('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODk
+               wIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQs
+               sw5c')                                                                                     
+                                                                       
+    /src/frontend/src/app/last-login-ip/last-login-ip.component.spec.ts
+   ❯❯❱ generic.secrets.security.detected-jwt-token.detected-jwt-token
+          ❰❰ Blocking ❱❱
+          JWT token detected          
+          Details: https://sg.run/05N5
+                                      
+           61┆ localStorage.setItem('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7Imxhc3RMb2d
+               pbklwIjoiMS4yLjMuNCJ9fQ.RAkmdqwNypuOxv3SDjPO4xMKvd1CddKvDFYDBfUt3bg')                      
+            ⋮┆----------------------------------------
+           67┆ localStorage.setItem('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7fX0.bVBhvll
+               6IaeR3aUdoOeyR8YZe2S2DfhGAxTGfd9enLw')                                                     
+                                                           
+    /src/frontend/src/hacking-instructor/helpers/helpers.ts
+    ❯❱ javascript.lang.security.audit.prototype-pollution.prototype-pollution-loop.prototype-pollution-loop
+          ❰❰ Blocking ❱❱
+          Possibility of prototype polluting function detected. By adding or modifying attributes of an object
+          prototype, it is possible to create attributes that exist on every object, or replace critical      
+          attributes with malicious ones. This can be problematic if the software depends on existence or non-
+          existence of certain attributes, or uses pre-defined attributes of object prototype (such as        
+          hasOwnProperty, toString or valueOf). Possible mitigations might be: freezing the object prototype, 
+          using an object without prototypes (via Object.create(null) ), blocking modifications of attributes 
+          that resolve to object prototype, using Map instead of object.                                      
+          Details: https://sg.run/w1DB                                                                        
+                                                                                                              
+           49┆ replacementValue = replacementValue[property]
+                                                                        
+    /src/juice-shop-master/.github/workflows/update-challenges-ebook.yml
+   ❯❯❱ yaml.github-actions.security.run-shell-injection.run-shell-injection
+          ❰❰ Blocking ❱❱
+          Using variable interpolation `${{...}}` with `github` context data in a `run:` step could allow an  
+          attacker to inject their own code into the runner. This would allow them to steal secrets and code. 
+          `github` context data can have arbitrary user input and should be treated as untrusted. Instead, use
+          an intermediate environment variable with `env:` to store the data and use the environment variable 
+          in the `run:` script. Be sure to use double-quotes the environment variable, like this: "$ENVVAR".  
+          Details: https://sg.run/pkzk                                                                        
+                                                                                                              
+           22┆ run: |
+           23┆   cd docs/modules/ROOT/assets/data
+           24┆   rm challenges.yml
+           25┆   wget https://raw.githubusercontent.com/juice-shop/juice-shop/${{ github.ref_name
+               }}/data/static/challenges.yml                                                     
+                                                                             
+    /src/juice-shop-master/.github/workflows/update-challenges-www-legacy.yml
+   ❯❯❱ yaml.github-actions.security.run-shell-injection.run-shell-injection
+          ❰❰ Blocking ❱❱
+          Using variable interpolation `${{...}}` with `github` context data in a `run:` step could allow an  
+          attacker to inject their own code into the runner. This would allow them to steal secrets and code. 
+          `github` context data can have arbitrary user input and should be treated as untrusted. Instead, use
+          an intermediate environment variable with `env:` to store the data and use the environment variable 
+          in the `run:` script. Be sure to use double-quotes the environment variable, like this: "$ENVVAR".  
+          Details: https://sg.run/pkzk                                                                        
+                                                                                                              
+           27┆ run: |
+           28┆   if [ "${{ github.ref_name }}" = "master" ]; then
+           29┆     DEST_FILE="_data/challenges.yml"
+           30┆   else
+           31┆     DEST_FILE="_data/challenges_dev.yml"
+           32┆   fi
+           33┆   rm -f $DEST_FILE
+           34┆   cp juice-shop/data/static/challenges.yml $DEST_FILE
+            ⋮┆----------------------------------------
+           36┆ run: |
+           37┆   if [ "${{ github.ref_name }}" = "master" ]; then
+           38┆     DEST_FILE="_data/snippets.json"
+           39┆   else
+           40┆     DEST_FILE="_data/snippets_dev.json"
+           41┆   fi
+           42┆   rm -f $DEST_FILE
+           43┆   CHALLENGES=$(ls juice-shop/data/static/codefixes/*.info.yml | xargs -n 1 basename | sed
+               's/\.info\.yml//' | jq -R . | jq -s -c '{"challenges": .}')                              
+           44┆   echo $CHALLENGES > $DEST_FILE
+                                                                      
+    /src/juice-shop-master/.github/workflows/update-challenges-www.yml
+   ❯❯❱ yaml.github-actions.security.run-shell-injection.run-shell-injection
+          ❰❰ Blocking ❱❱
+          Using variable interpolation `${{...}}` with `github` context data in a `run:` step could allow an  
+          attacker to inject their own code into the runner. This would allow them to steal secrets and code. 
+          `github` context data can have arbitrary user input and should be treated as untrusted. Instead, use
+          an intermediate environment variable with `env:` to store the data and use the environment variable 
+          in the `run:` script. Be sure to use double-quotes the environment variable, like this: "$ENVVAR".  
+          Details: https://sg.run/pkzk                                                                        
+                                                                                                              
+           27┆ run: |
+           28┆   if [ "${{ github.ref_name }}" = "master" ]; then
+           29┆     DEST_FILE="_data/challenges.yml"
+           30┆   else
+           31┆     DEST_FILE="_data/challenges_dev.yml"
+           32┆   fi
+           33┆   rm -f $DEST_FILE
+           34┆   cp juice-shop/data/static/challenges.yml $DEST_FILE
+            ⋮┆----------------------------------------
+           36┆ run: |
+           37┆   if [ "${{ github.ref_name }}" = "master" ]; then
+           38┆     DEST_FILE="_data/snippets.json"
+           39┆   else
+           40┆     DEST_FILE="_data/snippets_dev.yml"
+           41┆   fi
+           42┆   rm -f $DEST_FILE
+           43┆   CHALLENGES=$(ls juice-shop/data/static/codefixes/*.info.yml | xargs -n 1 basename | sed
+               's/\.info\.yml//' | jq -R . | jq -s -c '{"challenges": .}')                              
+           44┆   echo $CHALLENGES > $DEST_FILE
+                                                                       
+    /src/juice-shop-master/data/static/codefixes/dbSchemaChallenge_1.ts
+   ❯❯❱ javascript.sequelize.security.audit.sequelize-injection-express.express-sequelize-injection
+          ❰❰ Blocking ❱❱
+          Detected a sequelize statement that is tainted by user-input. This could lead to SQL injection if   
+          the variable is user-controlled and is not properly sanitized. In order to prevent SQL injection, it
+          is recommended to use parameterized queries or prepared statements.                                 
+          Details: https://sg.run/gjoe                                                                        
+                                                                                                              
+            5┆ models.sequelize.query("SELECT * FROM Products WHERE ((name LIKE '%"+criteria+"%' OR
+               description LIKE '%"+criteria+"%') AND deletedAt IS NULL) ORDER BY name")           
+                                                                       
+    /src/juice-shop-master/data/static/codefixes/dbSchemaChallenge_3.ts
+   ❯❯❱ javascript.sequelize.security.audit.sequelize-injection-express.express-sequelize-injection
+          ❰❰ Blocking ❱❱
+          Detected a sequelize statement that is tainted by user-input. This could lead to SQL injection if   
+          the variable is user-controlled and is not properly sanitized. In order to prevent SQL injection, it
+          is recommended to use parameterized queries or prepared statements.                                 
+          Details: https://sg.run/gjoe                                                                        
+                                                                                                              
+           11┆ models.sequelize.query(`SELECT * FROM Products WHERE ((name LIKE '%${criteria}%' OR
+               description LIKE '%${criteria}%') AND deletedAt IS NULL) ORDER BY name`)           
+                                                                         
+    /src/juice-shop-master/data/static/codefixes/restfulXssChallenge_2.ts
+     ❱ javascript.audit.detect-replaceall-sanitization.detect-replaceall-sanitization
+          ❰❰ Blocking ❱❱
+          Detected a call to `replaceAll()` in an attempt to HTML escape the string                        
+          `tableData[i].description`. Manually sanitizing input through a manually built list can be       
+          circumvented in many situations, and it's better to use a well known sanitization library such as
+          `sanitize-html` or `DOMPurify`.                                                                  
+          Details: https://sg.run/AzoB                                                                     
+                                                                                                           
+           49┆ tableData[i].description = tableData[i].description.replaceAll('<', '&lt;').replaceAll('>',
+               '&gt;')                                                                                    
+            ⋮┆----------------------------------------
+     ❱ javascript.audit.detect-replaceall-sanitization.detect-replaceall-sanitization
+          ❰❰ Blocking ❱❱
+          Detected a call to `replaceAll()` in an attempt to HTML escape the string                          
+          `tableData[i].description.replaceAll('<', '&lt;')`. Manually sanitizing input through a manually   
+          built list can be circumvented in many situations, and it's better to use a well known sanitization
+          library such as `sanitize-html` or `DOMPurify`.                                                    
+          Details: https://sg.run/AzoB                                                                       
+                                                                                                             
+           49┆ tableData[i].description = tableData[i].description.replaceAll('<', '&lt;').replaceAll('>',
+               '&gt;')                                                                                    
+                                                                                
+    /src/juice-shop-master/data/static/codefixes/unionSqlInjectionChallenge_1.ts
+   ❯❯❱ javascript.sequelize.security.audit.sequelize-injection-express.express-sequelize-injection
+          ❰❰ Blocking ❱❱
+          Detected a sequelize statement that is tainted by user-input. This could lead to SQL injection if   
+          the variable is user-controlled and is not properly sanitized. In order to prevent SQL injection, it
+          is recommended to use parameterized queries or prepared statements.                                 
+          Details: https://sg.run/gjoe                                                                        
+                                                                                                              
+            6┆ models.sequelize.query(`SELECT * FROM Products WHERE ((name LIKE '%${criteria}%' OR
+               description LIKE '%${criteria}%') AND deletedAt IS NULL) ORDER BY name`)           
+                                                                                
+    /src/juice-shop-master/data/static/codefixes/unionSqlInjectionChallenge_3.ts
+   ❯❯❱ javascript.sequelize.security.audit.sequelize-injection-express.express-sequelize-injection
+          ❰❰ Blocking ❱❱
+          Detected a sequelize statement that is tainted by user-input. This could lead to SQL injection if   
+          the variable is user-controlled and is not properly sanitized. In order to prevent SQL injection, it
+          is recommended to use parameterized queries or prepared statements.                                 
+          Details: https://sg.run/gjoe                                                                        
+                                                                                                              
+           10┆ models.sequelize.query(`SELECT * FROM Products WHERE ((name LIKE '%${criteria}%' OR
+               description LIKE '%${criteria}%') AND deletedAt IS NULL) ORDER BY name`)           
+                                                
+    /src/juice-shop-master/data/static/users.yml
+   ❯❯❱ generic.secrets.security.detected-generic-secret.detected-generic-secret
+          ❰❰ Blocking ❱❱
+          Generic Secret detected     
+          Details: https://sg.run/l2o5
+                                      
+          151┆ totpSecret: IFTXE3SPOEYVURT2MRYGI52TKJ4HC3KH
+                                                             
+    /src/juice-shop-master/frontend/src/app/app.guard.spec.ts
+   ❯❯❱ generic.secrets.security.detected-jwt-token.detected-jwt-token
+          ❰❰ Blocking ❱❱
+          JWT token detected          
+          Details: https://sg.run/05N5
+                                      
+           38┆ localStorage.setItem('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODk
+               wIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQs
+               sw5c')                                                                                     
+                                                                                         
+    /src/juice-shop-master/frontend/src/app/last-login-ip/last-login-ip.component.spec.ts
+   ❯❯❱ generic.secrets.security.detected-jwt-token.detected-jwt-token
+          ❰❰ Blocking ❱❱
+          JWT token detected          
+          Details: https://sg.run/05N5
+                                      
+           61┆ localStorage.setItem('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7Imxhc3RMb2d
+               pbklwIjoiMS4yLjMuNCJ9fQ.RAkmdqwNypuOxv3SDjPO4xMKvd1CddKvDFYDBfUt3bg')                      
+            ⋮┆----------------------------------------
+           67┆ localStorage.setItem('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7fX0.bVBhvll
+               6IaeR3aUdoOeyR8YZe2S2DfhGAxTGfd9enLw')                                                     
+                                                                             
+    /src/juice-shop-master/frontend/src/hacking-instructor/helpers/helpers.ts
+    ❯❱ javascript.lang.security.audit.prototype-pollution.prototype-pollution-loop.prototype-pollution-loop
+          ❰❰ Blocking ❱❱
+          Possibility of prototype polluting function detected. By adding or modifying attributes of an object
+          prototype, it is possible to create attributes that exist on every object, or replace critical      
+          attributes with malicious ones. This can be problematic if the software depends on existence or non-
+          existence of certain attributes, or uses pre-defined attributes of object prototype (such as        
+          hasOwnProperty, toString or valueOf). Possible mitigations might be: freezing the object prototype, 
+          using an object without prototypes (via Object.create(null) ), blocking modifications of attributes 
+          that resolve to object prototype, using Map instead of object.                                      
+          Details: https://sg.run/w1DB                                                                        
+                                                                                                              
+           49┆ replacementValue = replacementValue[property]
+                                                  
+    /src/juice-shop-master/lib/codingChallenges.ts
+    ❯❱ javascript.lang.security.audit.detect-non-literal-regexp.detect-non-literal-regexp
+          ❰❰ Blocking ❱❱
+          RegExp() called with a `challengeKey` function argument, this might allow an attacker to cause a    
+          Regular Expression Denial-of-Service (ReDoS) within your application as RegExP blocks the main      
+          thread. For this reason, it is recommended to use hardcoded regexes instead. If your regex is run on
+          user-controlled input, consider performing input validation or use a regex checking/sanitization    
+          library such as https://www.npmjs.com/package/recheck to verify that the regex does not appear      
+          vulnerable to ReDoS.                                                                                
+          Details: https://sg.run/gr65                                                                        
+                                                                                                              
+           76┆ if (new RegExp(`vuln-code-snippet vuln-line.*${challengeKey}`).exec(lines[i]) != null) {
+            ⋮┆----------------------------------------
+           78┆ } else if (new RegExp(`vuln-code-snippet neutral-line.*${challengeKey}`).exec(lines[i]) !=
+               null) {                                                                                   
+                                            
+    /src/juice-shop-master/lib/insecurity.ts
+    ❯❱ javascript.lang.security.audit.hardcoded-hmac-key.hardcoded-hmac-key
+          ❰❰ Blocking ❱❱
+          Detected a hardcoded hmac key. Avoid hardcoding secrets and consider using an alternate option such
+          as reading the secret from a config file or using an environment variable.                         
+          Details: https://sg.run/K9bn                                                                       
+                                                                                                             
+           44┆ export const hmac = (data: string) => crypto.createHmac('sha256',
+               'pa4qacea4VK9t9nGv7yZtwmj').update(data).digest('hex')           
+   
+    ❯❱ javascript.jsonwebtoken.security.jwt-hardcode.hardcoded-jwt-secret
+          ❰❰ Blocking ❱❱
+          A hard-coded credential was detected. It is not recommended to store credentials in source-code, as
+          this risks secrets being leaked and used by either an internal or external malicious adversary. It 
+          is recommended to use environment variables to securely provide credentials or retrieve credentials
+          from a secure vault or HSM (Hardware Security Module).                                             
+          Details: https://sg.run/4xN9                                                                       
+                                                                                                             
+           56┆ export const authorize = (user = {}) => jwt.sign(user, privateKey, { expiresIn: '6h',
+               algorithm: 'RS256' })                                                                
+   
+    ❯❱ javascript.lang.security.audit.hardcoded-hmac-key.hardcoded-hmac-key
+          ❰❰ Blocking ❱❱
+          Detected a hardcoded hmac key. Avoid hardcoding secrets and consider using an alternate option such
+          as reading the secret from a config file or using an environment variable.                         
+          Details: https://sg.run/K9bn                                                                       
+                                                                                                             
+          152┆ const hmac = crypto.createHmac('sha256', privateKey)
+                                             
+    /src/juice-shop-master/routes/b2bOrder.ts
+    ❯❱ javascript.express.security.audit.express-detect-notevil-usage.express-detect-notevil-usage
+          ❰❰ Blocking ❱❱
+          Detected usage of the `notevil` package, which is unmaintained and has vulnerabilities. Using any 
+          sort of `eval()` functionality can be very dangerous, but if you must, the `eval` package is an up
+          to date alternative. Be sure that only trusted input reaches an `eval()` function.                
+          Details: https://sg.run/W70E                                                                      
+                                                                                                            
+           23┆ vm.runInContext('safeEval(orderLinesData)', sandbox, { timeout: 2000 })
+                                            
+    /src/juice-shop-master/routes/captcha.ts
+    ❯❱ javascript.browser.security.eval-detected.eval-detected
+          ❰❰ Blocking ❱❱
+          Detected the use of eval(). eval() can be dangerous if used to evaluate dynamic content. If this 
+          content can be input from outside the program, this may be a code injection vulnerability. Ensure
+          evaluated content is not definable by external sources.                                          
+          Details: https://sg.run/7ope                                                                     
+                                                                                                           
+           22┆ const answer = eval(expression).toString() // eslint-disable-line no-eval
+                                            
+    /src/juice-shop-master/routes/chatbot.ts
+    ❯❱ javascript.express.security.injection.raw-html-format.raw-html-format
+          ❰❰ Blocking ❱❱
+          User data flows into the host portion of this manually-constructed HTML. This can introduce a Cross-
+          Site-Scripting (XSS) vulnerability if this comes from user-provided input. Consider using a         
+          sanitization library such as DOMPurify to sanitize the HTML within.                                 
+          Details: https://sg.run/5DO3                                                                        
+                                                                                                              
+          205┆ body: bot.training.state ? bot.greet(`${user.id}`) :                                     
+               `${config.get<string>('application.chatBot.name')} isn't ready at the moment, please wait
+               while I set things up`                                                                   
+                                                
+    /src/juice-shop-master/routes/currentUser.ts
+   ❯❯❱ javascript.express.security.audit.remote-property-injection.remote-property-injection
+          ❰❰ Blocking ❱❱
+          Bracket object notation with user input is present, this might allow an attacker to access all
+          properties of the object and even it's prototype. Use literal values for object properties.   
+          Details: https://sg.run/Z4gn                                                                  
+                                                                                                        
+           31┆ baseUser[field] = user?.data[field as keyof typeof user.data]
+                                               
+    /src/juice-shop-master/routes/fileServer.ts
+    ❯❱ javascript.express.security.audit.express-res-sendfile.express-res-sendfile
+          ❰❰ Blocking ❱❱
+          The application processes user-input, this is passed to res.sendFile which can allow an attacker to
+          arbitrarily read files on the system through path traversal. It is recommended to perform input    
+          validation in addition to canonicalizing the path. This allows you to validate the path against the
+          intended directory it should be accessing.                                                         
+          Details: https://sg.run/7DJk                                                                       
+                                                                                                             
+           33┆ res.sendFile(path.resolve('ftp/', file))
+                                               
+    /src/juice-shop-master/routes/fileUpload.ts
+    ❯❱ javascript.express.security.audit.express-libxml-vm-noent.express-libxml-vm-noent
+          ❰❰ Blocking ❱❱
+          Detected use of parseXml() function with the `noent` field set to `true`. This can lead to an XML
+          External Entities (XXE) attack if untrusted data is passed into it.                              
+          Details: https://sg.run/n8Ag                                                                     
+                                                                                                           
+           83┆ const xmlDoc = vm.runInContext('libxml.parseXml(data, { noblanks: true, noent: true,
+               nocdata: true })', sandbox, { timeout: 2000 })                                      
+                                              
+    /src/juice-shop-master/routes/keyServer.ts
+    ❯❱ javascript.express.security.audit.express-res-sendfile.express-res-sendfile
+          ❰❰ Blocking ❱❱
+          The application processes user-input, this is passed to res.sendFile which can allow an attacker to
+          arbitrarily read files on the system through path traversal. It is recommended to perform input    
+          validation in addition to canonicalizing the path. This allows you to validate the path against the
+          intended directory it should be accessing.                                                         
+          Details: https://sg.run/7DJk                                                                       
+                                                                                                             
+           14┆ res.sendFile(path.resolve('encryptionkeys/', file))
+                                                  
+    /src/juice-shop-master/routes/logfileServer.ts
+    ❯❱ javascript.express.security.audit.express-res-sendfile.express-res-sendfile
+          ❰❰ Blocking ❱❱
+          The application processes user-input, this is passed to res.sendFile which can allow an attacker to
+          arbitrarily read files on the system through path traversal. It is recommended to perform input    
+          validation in addition to canonicalizing the path. This allows you to validate the path against the
+          intended directory it should be accessing.                                                         
+          Details: https://sg.run/7DJk                                                                       
+                                                                                                             
+           14┆ res.sendFile(path.resolve('logs/', file))
+                                          
+    /src/juice-shop-master/routes/login.ts
+   ❯❯❱ javascript.sequelize.security.audit.sequelize-injection-express.express-sequelize-injection
+          ❰❰ Blocking ❱❱
+          Detected a sequelize statement that is tainted by user-input. This could lead to SQL injection if   
+          the variable is user-controlled and is not properly sanitized. In order to prevent SQL injection, it
+          is recommended to use parameterized queries or prepared statements.                                 
+          Details: https://sg.run/gjoe                                                                        
+                                                                                                              
+           34┆ models.sequelize.query(`SELECT * FROM Users WHERE email = '${req.body.email || ''}' AND
+               password = '${security.hash(req.body.password || '')}' AND deletedAt IS NULL`, { model:
+               UserModel, plain: true }) // vuln-code-snippet vuln-line loginAdminChallenge           
+               loginBenderChallenge loginJimChallenge                                                 
+                                                     
+    /src/juice-shop-master/routes/quarantineServer.ts
+    ❯❱ javascript.express.security.audit.express-res-sendfile.express-res-sendfile
+          ❰❰ Blocking ❱❱
+          The application processes user-input, this is passed to res.sendFile which can allow an attacker to
+          arbitrarily read files on the system through path traversal. It is recommended to perform input    
+          validation in addition to canonicalizing the path. This allows you to validate the path against the
+          intended directory it should be accessing.                                                         
+          Details: https://sg.run/7DJk                                                                       
+                                                                                                             
+           14┆ res.sendFile(path.resolve('ftp/quarantine/', file))
+                                             
+    /src/juice-shop-master/routes/redirect.ts
+    ❯❱ javascript.express.security.audit.express-open-redirect.express-open-redirect
+          ❰❰ Blocking ❱❱
+          The application redirects to a URL specified by user-supplied input `query` that is not validated. 
+          This could redirect users to malicious locations. Consider using an allow-list approach to validate
+          URLs, or warn users they are being redirected to a third-party website.                            
+          Details: https://sg.run/EpoP                                                                       
+                                                                                                             
+           19┆ res.redirect(toUrl)
+                                           
+    /src/juice-shop-master/routes/search.ts
+   ❯❯❱ javascript.sequelize.security.audit.sequelize-injection-express.express-sequelize-injection
+          ❰❰ Blocking ❱❱
+          Detected a sequelize statement that is tainted by user-input. This could lead to SQL injection if   
+          the variable is user-controlled and is not properly sanitized. In order to prevent SQL injection, it
+          is recommended to use parameterized queries or prepared statements.                                 
+          Details: https://sg.run/gjoe                                                                        
+                                                                                                              
+           23┆ models.sequelize.query(`SELECT * FROM Products WHERE ((name LIKE '%${criteria}%' OR   
+               description LIKE '%${criteria}%') AND deletedAt IS NULL) ORDER BY name`) // vuln-code-
+               snippet vuln-line unionSqlInjectionChallenge dbSchemaChallenge                        
+                                                
+    /src/juice-shop-master/routes/userProfile.ts
+    ❯❱ javascript.browser.security.eval-detected.eval-detected
+          ❰❰ Blocking ❱❱
+          Detected the use of eval(). eval() can be dangerous if used to evaluate dynamic content. If this 
+          content can be input from outside the program, this may be a code injection vulnerability. Ensure
+          evaluated content is not definable by external sources.                                          
+          Details: https://sg.run/7ope                                                                     
+                                                                                                           
+           62┆ username = eval(code) // eslint-disable-line no-eval
+   
+   ❯❯❱ javascript.lang.security.audit.code-string-concat.code-string-concat
+          ❰❰ Blocking ❱❱
+          Found data from an Express or Next web request flowing to `eval`. If this data is user-controllable
+          this can lead to execution of arbitrary system commands in the context of your application process.
+          Avoid `eval` whenever possible.                                                                    
+          Details: https://sg.run/96Yk                                                                       
+                                                                                                             
+           62┆ username = eval(code) // eslint-disable-line no-eval
+                                                 
+    /src/juice-shop-master/routes/videoHandler.ts
+    ❯❱ javascript.lang.security.audit.unknown-value-with-script-tag.unknown-value-with-script-tag
+          ❰❰ Blocking ❱❱
+          Cannot determine what 'subs' is and it is used with a '<script>' tag. This could be susceptible to
+          cross-site scripting (XSS). Ensure 'subs' is not externally controlled, or sanitize this data.    
+          Details: https://sg.run/1Zy1                                                                      
+                                                                                                            
+           58┆ challengeUtils.solveIf(challenges.videoXssChallenge, () => { return utils.contains(subs,
+               '</script><script>alert(`xss`)</script>') })                                            
+            ⋮┆----------------------------------------
+           71┆ compiledTemplate = compiledTemplate.replace('<script id="subtitle"></script>', '<script  
+               id="subtitle" type="text/vtt" data-label="English" data-lang="en">' + subs + '</script>')
+                                    
+    /src/juice-shop-master/server.ts
+     ❱ javascript.lang.security.audit.unsafe-formatstring.unsafe-formatstring
+          ❰❰ Blocking ❱❱
+          Detected string concatenation with a non-literal variable in a util.format / console.log function.
+          If an attacker injects a format specifier in the string, it will forge the log message. Try to use
+          constant values for the format string.                                                            
+          Details: https://sg.run/7Y5R                                                                      
+                                                                                                            
+          155┆ console.error('Error in timed startup function: ' + name, err)
+   
+    ❯❱ javascript.express.security.audit.express-check-directory-listing.express-check-directory-listing
+          ❰❰ Blocking ❱❱
+          Directory listing/indexing is enabled, which may lead to disclosure of sensitive directories and 
+          files. It is recommended to disable directory listing unless it is a public resource. If you need
+          directory listing, ensure that sensitive files are inaccessible when querying the resource.      
+          Details: https://sg.run/DX2G                                                                     
+                                                                                                           
+          269┆ app.use('/ftp', serveIndexMiddleware, serveIndex('ftp', { icons: true })) // vuln-code-
+               snippet vuln-line directoryListingChallenge                                            
+            ⋮┆----------------------------------------
+          273┆ app.use('/.well-known', serveIndexMiddleware, serveIndex('.well-known', { icons: true,
+               view: 'details' }))                                                                   
+            ⋮┆----------------------------------------
+          277┆ app.use('/encryptionkeys', serveIndexMiddleware, serveIndex('encryptionkeys', { icons:
+               true, view: 'details' }))                                                             
+            ⋮┆----------------------------------------
+          281┆ app.use('/support/logs', serveIndexMiddleware, serveIndex('logs', { icons: true, view:
+               'details' })) // vuln-code-snippet vuln-line accessLogDisclosureChallenge             
+                                                   
+    /src/juice-shop-master/views/promotionVideo.pug
+    ❯❱ javascript.express.security.audit.xss.pug.explicit-unescape.template-explicit-unescape
+          ❰❰ Blocking ❱❱
+          Detected an explicit unescape in a Pug template, using either '!=' or '!{...}'. If external data can
+          reach these locations, your application is exposed to a cross-site scripting (XSS) vulnerability. If
+          you must do this, ensure no external data can reach this location.                                  
+          Details: https://sg.run/3xbe                                                                        
+                                                                                                              
+           78┆ if (splitted.length != 2) {
+                                
+    /src/lib/codingChallenges.ts
+    ❯❱ javascript.lang.security.audit.detect-non-literal-regexp.detect-non-literal-regexp
+          ❰❰ Blocking ❱❱
+          RegExp() called with a `challengeKey` function argument, this might allow an attacker to cause a    
+          Regular Expression Denial-of-Service (ReDoS) within your application as RegExP blocks the main      
+          thread. For this reason, it is recommended to use hardcoded regexes instead. If your regex is run on
+          user-controlled input, consider performing input validation or use a regex checking/sanitization    
+          library such as https://www.npmjs.com/package/recheck to verify that the regex does not appear      
+          vulnerable to ReDoS.                                                                                
+          Details: https://sg.run/gr65                                                                        
+                                                                                                              
+           76┆ if (new RegExp(`vuln-code-snippet vuln-line.*${challengeKey}`).exec(lines[i]) != null) {
+            ⋮┆----------------------------------------
+           78┆ } else if (new RegExp(`vuln-code-snippet neutral-line.*${challengeKey}`).exec(lines[i]) !=
+               null) {                                                                                   
+                          
+    /src/lib/insecurity.ts
+    ❯❱ javascript.lang.security.audit.hardcoded-hmac-key.hardcoded-hmac-key
+          ❰❰ Blocking ❱❱
+          Detected a hardcoded hmac key. Avoid hardcoding secrets and consider using an alternate option such
+          as reading the secret from a config file or using an environment variable.                         
+          Details: https://sg.run/K9bn                                                                       
+                                                                                                             
+           44┆ export const hmac = (data: string) => crypto.createHmac('sha256',
+               'pa4qacea4VK9t9nGv7yZtwmj').update(data).digest('hex')           
+   
+    ❯❱ javascript.jsonwebtoken.security.jwt-hardcode.hardcoded-jwt-secret
+          ❰❰ Blocking ❱❱
+          A hard-coded credential was detected. It is not recommended to store credentials in source-code, as
+          this risks secrets being leaked and used by either an internal or external malicious adversary. It 
+          is recommended to use environment variables to securely provide credentials or retrieve credentials
+          from a secure vault or HSM (Hardware Security Module).                                             
+          Details: https://sg.run/4xN9                                                                       
+                                                                                                             
+           56┆ export const authorize = (user = {}) => jwt.sign(user, privateKey, { expiresIn: '6h',
+               algorithm: 'RS256' })                                                                
+   
+    ❯❱ javascript.lang.security.audit.hardcoded-hmac-key.hardcoded-hmac-key
+          ❰❰ Blocking ❱❱
+          Detected a hardcoded hmac key. Avoid hardcoding secrets and consider using an alternate option such
+          as reading the secret from a config file or using an environment variable.                         
+          Details: https://sg.run/K9bn                                                                       
+                                                                                                             
+          152┆ const hmac = crypto.createHmac('sha256', privateKey)
+                           
+    /src/routes/b2bOrder.ts
+    ❯❱ javascript.express.security.audit.express-detect-notevil-usage.express-detect-notevil-usage
+          ❰❰ Blocking ❱❱
+          Detected usage of the `notevil` package, which is unmaintained and has vulnerabilities. Using any 
+          sort of `eval()` functionality can be very dangerous, but if you must, the `eval` package is an up
+          to date alternative. Be sure that only trusted input reaches an `eval()` function.                
+          Details: https://sg.run/W70E                                                                      
+                                                                                                            
+           23┆ vm.runInContext('safeEval(orderLinesData)', sandbox, { timeout: 2000 })
+                          
+    /src/routes/captcha.ts
+    ❯❱ javascript.browser.security.eval-detected.eval-detected
+          ❰❰ Blocking ❱❱
+          Detected the use of eval(). eval() can be dangerous if used to evaluate dynamic content. If this 
+          content can be input from outside the program, this may be a code injection vulnerability. Ensure
+          evaluated content is not definable by external sources.                                          
+          Details: https://sg.run/7ope                                                                     
+                                                                                                           
+           22┆ const answer = eval(expression).toString() // eslint-disable-line no-eval
+                          
+    /src/routes/chatbot.ts
+    ❯❱ javascript.express.security.injection.raw-html-format.raw-html-format
+          ❰❰ Blocking ❱❱
+          User data flows into the host portion of this manually-constructed HTML. This can introduce a Cross-
+          Site-Scripting (XSS) vulnerability if this comes from user-provided input. Consider using a         
+          sanitization library such as DOMPurify to sanitize the HTML within.                                 
+          Details: https://sg.run/5DO3                                                                        
+                                                                                                              
+          205┆ body: bot.training.state ? bot.greet(`${user.id}`) :                                     
+               `${config.get<string>('application.chatBot.name')} isn't ready at the moment, please wait
+               while I set things up`                                                                   
+                              
+    /src/routes/currentUser.ts
+   ❯❯❱ javascript.express.security.audit.remote-property-injection.remote-property-injection
+          ❰❰ Blocking ❱❱
+          Bracket object notation with user input is present, this might allow an attacker to access all
+          properties of the object and even it's prototype. Use literal values for object properties.   
+          Details: https://sg.run/Z4gn                                                                  
+                                                                                                        
+           31┆ baseUser[field] = user?.data[field as keyof typeof user.data]
+                             
+    /src/routes/fileServer.ts
+    ❯❱ javascript.express.security.audit.express-res-sendfile.express-res-sendfile
+          ❰❰ Blocking ❱❱
+          The application processes user-input, this is passed to res.sendFile which can allow an attacker to
+          arbitrarily read files on the system through path traversal. It is recommended to perform input    
+          validation in addition to canonicalizing the path. This allows you to validate the path against the
+          intended directory it should be accessing.                                                         
+          Details: https://sg.run/7DJk                                                                       
+                                                                                                             
+           33┆ res.sendFile(path.resolve('ftp/', file))
+                             
+    /src/routes/fileUpload.ts
+    ❯❱ javascript.express.security.audit.express-libxml-vm-noent.express-libxml-vm-noent
+          ❰❰ Blocking ❱❱
+          Detected use of parseXml() function with the `noent` field set to `true`. This can lead to an XML
+          External Entities (XXE) attack if untrusted data is passed into it.                              
+          Details: https://sg.run/n8Ag                                                                     
+                                                                                                           
+           83┆ const xmlDoc = vm.runInContext('libxml.parseXml(data, { noblanks: true, noent: true,
+               nocdata: true })', sandbox, { timeout: 2000 })                                      
+                            
+    /src/routes/keyServer.ts
+    ❯❱ javascript.express.security.audit.express-res-sendfile.express-res-sendfile
+          ❰❰ Blocking ❱❱
+          The application processes user-input, this is passed to res.sendFile which can allow an attacker to
+          arbitrarily read files on the system through path traversal. It is recommended to perform input    
+          validation in addition to canonicalizing the path. This allows you to validate the path against the
+          intended directory it should be accessing.                                                         
+          Details: https://sg.run/7DJk                                                                       
+                                                                                                             
+           14┆ res.sendFile(path.resolve('encryptionkeys/', file))
+                                
+    /src/routes/logfileServer.ts
+    ❯❱ javascript.express.security.audit.express-res-sendfile.express-res-sendfile
+          ❰❰ Blocking ❱❱
+          The application processes user-input, this is passed to res.sendFile which can allow an attacker to
+          arbitrarily read files on the system through path traversal. It is recommended to perform input    
+          validation in addition to canonicalizing the path. This allows you to validate the path against the
+          intended directory it should be accessing.                                                         
+          Details: https://sg.run/7DJk                                                                       
+                                                                                                             
+           14┆ res.sendFile(path.resolve('logs/', file))
+                        
+    /src/routes/login.ts
+   ❯❯❱ javascript.sequelize.security.audit.sequelize-injection-express.express-sequelize-injection
+          ❰❰ Blocking ❱❱
+          Detected a sequelize statement that is tainted by user-input. This could lead to SQL injection if   
+          the variable is user-controlled and is not properly sanitized. In order to prevent SQL injection, it
+          is recommended to use parameterized queries or prepared statements.                                 
+          Details: https://sg.run/gjoe                                                                        
+                                                                                                              
+           34┆ models.sequelize.query(`SELECT * FROM Users WHERE email = '${req.body.email || ''}' AND
+               password = '${security.hash(req.body.password || '')}' AND deletedAt IS NULL`, { model:
+               UserModel, plain: true }) // vuln-code-snippet vuln-line loginAdminChallenge           
+               loginBenderChallenge loginJimChallenge                                                 
+                                   
+    /src/routes/quarantineServer.ts
+    ❯❱ javascript.express.security.audit.express-res-sendfile.express-res-sendfile
+          ❰❰ Blocking ❱❱
+          The application processes user-input, this is passed to res.sendFile which can allow an attacker to
+          arbitrarily read files on the system through path traversal. It is recommended to perform input    
+          validation in addition to canonicalizing the path. This allows you to validate the path against the
+          intended directory it should be accessing.                                                         
+          Details: https://sg.run/7DJk                                                                       
+                                                                                                             
+           14┆ res.sendFile(path.resolve('ftp/quarantine/', file))
+                           
+    /src/routes/redirect.ts
+    ❯❱ javascript.express.security.audit.express-open-redirect.express-open-redirect
+          ❰❰ Blocking ❱❱
+          The application redirects to a URL specified by user-supplied input `query` that is not validated. 
+          This could redirect users to malicious locations. Consider using an allow-list approach to validate
+          URLs, or warn users they are being redirected to a third-party website.                            
+          Details: https://sg.run/EpoP                                                                       
+                                                                                                             
+           19┆ res.redirect(toUrl)
+                         
+    /src/routes/search.ts
+   ❯❯❱ javascript.sequelize.security.audit.sequelize-injection-express.express-sequelize-injection
+          ❰❰ Blocking ❱❱
+          Detected a sequelize statement that is tainted by user-input. This could lead to SQL injection if   
+          the variable is user-controlled and is not properly sanitized. In order to prevent SQL injection, it
+          is recommended to use parameterized queries or prepared statements.                                 
+          Details: https://sg.run/gjoe                                                                        
+                                                                                                              
+           23┆ models.sequelize.query(`SELECT * FROM Products WHERE ((name LIKE '%${criteria}%' OR   
+               description LIKE '%${criteria}%') AND deletedAt IS NULL) ORDER BY name`) // vuln-code-
+               snippet vuln-line unionSqlInjectionChallenge dbSchemaChallenge                        
+                              
+    /src/routes/userProfile.ts
+    ❯❱ javascript.browser.security.eval-detected.eval-detected
+          ❰❰ Blocking ❱❱
+          Detected the use of eval(). eval() can be dangerous if used to evaluate dynamic content. If this 
+          content can be input from outside the program, this may be a code injection vulnerability. Ensure
+          evaluated content is not definable by external sources.                                          
+          Details: https://sg.run/7ope                                                                     
+                                                                                                           
+           62┆ username = eval(code) // eslint-disable-line no-eval
+   
+   ❯❯❱ javascript.lang.security.audit.code-string-concat.code-string-concat
+          ❰❰ Blocking ❱❱
+          Found data from an Express or Next web request flowing to `eval`. If this data is user-controllable
+          this can lead to execution of arbitrary system commands in the context of your application process.
+          Avoid `eval` whenever possible.                                                                    
+          Details: https://sg.run/96Yk                                                                       
+                                                                                                             
+           62┆ username = eval(code) // eslint-disable-line no-eval
+                               
+    /src/routes/videoHandler.ts
+    ❯❱ javascript.lang.security.audit.unknown-value-with-script-tag.unknown-value-with-script-tag
+          ❰❰ Blocking ❱❱
+          Cannot determine what 'subs' is and it is used with a '<script>' tag. This could be susceptible to
+          cross-site scripting (XSS). Ensure 'subs' is not externally controlled, or sanitize this data.    
+          Details: https://sg.run/1Zy1                                                                      
+                                                                                                            
+           58┆ challengeUtils.solveIf(challenges.videoXssChallenge, () => { return utils.contains(subs,
+               '</script><script>alert(`xss`)</script>') })                                            
+            ⋮┆----------------------------------------
+           71┆ compiledTemplate = compiledTemplate.replace('<script id="subtitle"></script>', '<script  
+               id="subtitle" type="text/vtt" data-label="English" data-lang="en">' + subs + '</script>')
+                  
+    /src/server.ts
+     ❱ javascript.lang.security.audit.unsafe-formatstring.unsafe-formatstring
+          ❰❰ Blocking ❱❱
+          Detected string concatenation with a non-literal variable in a util.format / console.log function.
+          If an attacker injects a format specifier in the string, it will forge the log message. Try to use
+          constant values for the format string.                                                            
+          Details: https://sg.run/7Y5R                                                                      
+                                                                                                            
+          155┆ console.error('Error in timed startup function: ' + name, err)
+   
+    ❯❱ javascript.express.security.audit.express-check-directory-listing.express-check-directory-listing
+          ❰❰ Blocking ❱❱
+          Directory listing/indexing is enabled, which may lead to disclosure of sensitive directories and 
+          files. It is recommended to disable directory listing unless it is a public resource. If you need
+          directory listing, ensure that sensitive files are inaccessible when querying the resource.      
+          Details: https://sg.run/DX2G                                                                     
+                                                                                                           
+          269┆ app.use('/ftp', serveIndexMiddleware, serveIndex('ftp', { icons: true })) // vuln-code-
+               snippet vuln-line directoryListingChallenge                                            
+            ⋮┆----------------------------------------
+          273┆ app.use('/.well-known', serveIndexMiddleware, serveIndex('.well-known', { icons: true,
+               view: 'details' }))                                                                   
+            ⋮┆----------------------------------------
+          277┆ app.use('/encryptionkeys', serveIndexMiddleware, serveIndex('encryptionkeys', { icons:
+               true, view: 'details' }))                                                             
+            ⋮┆----------------------------------------
+          281┆ app.use('/support/logs', serveIndexMiddleware, serveIndex('logs', { icons: true, view:
+               'details' })) // vuln-code-snippet vuln-line accessLogDisclosureChallenge             
+                                 
+    /src/views/promotionVideo.pug
+    ❯❱ javascript.express.security.audit.xss.pug.explicit-unescape.template-explicit-unescape
+          ❰❰ Blocking ❱❱
+          Detected an explicit unescape in a Pug template, using either '!=' or '!{...}'. If external data can
+          reach these locations, your application is exposed to a cross-site scripting (XSS) vulnerability. If
+          you must do this, ensure no external data can reach this location.                                  
+          Details: https://sg.run/3xbe                                                                        
+                                                                                                              
+           78┆ if (splitted.length != 2) {
+
+                
+                
+┌──────────────┐
+│ Scan Summary │
+└──────────────┘
+✅ Scan completed successfully.
+ • Findings: 86 (86 blocking)
+ • Rules run: 302
+ • Targets scanned: 2098
+ • Parsed lines: ~99.9%
+ • Scan skipped: 
+   ◦ Files larger than  files 1.0 MB: 16
+   ◦ Files matching .semgrepignore patterns: 20
+ • For a detailed list of skipped files and lines, run semgrep with the --verbose flag
+Ran 302 rules on 2098 files: 86 findings.
+
+📢 Too many findings? Try Semgrep Pro for more powerful queries and less noise.
+   See https://sg.run/false-positives.
